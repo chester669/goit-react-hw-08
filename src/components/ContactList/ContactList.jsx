@@ -1,33 +1,32 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteContact } from "../../redux/contactsOps";
-import { selectFilteredContacts } from "../../redux/selectors";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteContact } from "../../redux/contacts/contactsOps";
+import { selectFilteredContacts } from "../../redux/contacts/contactSelectors";
 import styles from "./ContactList.module.css";
 
 const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectFilteredContacts);
 
-  const handleDelete = (id) => {
-    dispatch(deleteContact(id));
-  };
-
   return (
-    <ul className={styles.contactList}>
-      {contacts.map((contact) => (
-        <li key={contact.id} className={styles.contactItem}>
-          <div className={styles.contactInfo}>
-            <span className={styles.contactName}>{contact.name}</span>
-            <span className={styles.contactNumber}>{contact.number}</span>
-          </div>
-          <button
-            className={styles.deleteButton}
-            onClick={() => handleDelete(contact.id)}
-          >
-            Delete
-          </button>
-        </li>
-      ))}
+    <ul className={styles["contact-list"]}>
+      {contacts.length === 0 ? (
+        <p>No contacts found</p>
+      ) : (
+        contacts.map(({ id, name, number }) => (
+          <li key={id} className={styles["contact-item"]}>
+            <div className={styles["contact-info"]}>
+              <span className={styles["contact-name"]}>{name}</span>
+              <span className={styles["contact-number"]}>{number}</span>
+            </div>
+            <button
+              className={styles["delete-button"]}
+              onClick={() => dispatch(deleteContact(id))}
+            >
+              Delete
+            </button>
+          </li>
+        ))
+      )}
     </ul>
   );
 };

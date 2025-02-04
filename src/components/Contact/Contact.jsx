@@ -1,20 +1,14 @@
 import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsOps";
+import { deleteContact } from "../../redux/contacts/contactsOps";
 
 const Contact = ({ id, name, number }) => {
   const dispatch = useDispatch();
 
-  const handleDelete = () => {
-    dispatch(deleteContact(id));
-  };
-
   return (
-    <div>
-      <p>
-        {name}: {number}
-      </p>
-      <button onClick={handleDelete}>Delete</button>
-    </div>
+    <li>
+      {name}: {number}
+      <button onClick={() => dispatch(deleteContact(id))}>Delete</button>
+    </li>
   );
 };
 

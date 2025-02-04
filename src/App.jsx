@@ -1,30 +1,45 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchContacts } from "./redux/contactsOps";
-import { selectLoading, selectError } from "./redux/selectors";
-import ContactList from "./components/ContactList/ContactList";
-import ContactForm from "./components/ContactForm/ContactForm";
-import SearchBox from "./components/SearchBox/SearchBox";
-import "./App.css";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { refreshUser } from "./redux/auth/authOps";
+import useAuth from "./hooks/useAuth";
+import Layout from "./components/Layout/Layout";
+import PrivateRoute from "./components/PrivateRoute";
+import RestrictedRoute from "./components/RestrictRoute";
+import HomePage from "./pages/HomePage";
+import ContactsPage from "./pages/ContactsPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 const App = () => {
   const dispatch = useDispatch();
-  const loading = useSelector(selectLoading);
-  const error = useSelector(selectError);
+  const { isRefreshing, isLoggedIn } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
+  if (isRefreshing) return <p>Loading...</p>;
+
   return (
-    <div className="App">
-      <h1>Contacts</h1>
-      <ContactForm />
-      <SearchBox />
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      <ContactList />
-    </div>
+    <Routes>
+      {isLoggedIn ? (
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="/contacts"
+            element={<PrivateRoute component={<ContactsPage />} />}
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Route>
+      ) : (
+        <>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </>
+      )}
+    </Routes>
   );
 };
 
