@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { refreshUser } from "./redux/auth/authOps";
+import { refreshUser } from "./redux/auth/operations";
 import useAuth from "./hooks/useAuth";
 import Layout from "./components/Layout/Layout";
 import PrivateRoute from "./components/PrivateRoute";
