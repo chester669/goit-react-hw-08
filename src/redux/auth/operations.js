@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchContacts } from "../contacts/contactsOps";
+import { fetchContacts } from "../contacts/operations";
 
 axios.defaults.baseURL = "https://connections-api.goit.global/";
 
