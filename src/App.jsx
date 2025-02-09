@@ -1,8 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "./redux/auth/operations";
-import useAuth from "./hooks/useAuth";
 import Layout from "./components/Layout/Layout";
 import PrivateRoute from "./components/PrivateRoute";
 import RestrictedRoute from "./components/RestrictRoute";
@@ -13,7 +12,8 @@ import RegisterPage from "./pages/RegisterPage";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isRefreshing, isLoggedIn } = useAuth();
+  const isRefreshing = useSelector((state) => state.auth.isRefreshing);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
     dispatch(refreshUser());
@@ -23,22 +23,35 @@ const App = () => {
 
   return (
     <Routes>
-      {isLoggedIn ? (
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route
-            path="/contacts"
-            element={<PrivateRoute component={<ContactsPage />} />}
-          />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Route>
-      ) : (
-        <>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<Navigate to="/login" />} />
-        </>
-      )}
+      {}
+      <Route
+        path="/"
+        element={isLoggedIn ? <Layout /> : <Navigate to="/login" replace />}
+      >
+        <Route index element={<HomePage />} />
+        <Route
+          path="/contacts"
+          element={<PrivateRoute component={<ContactsPage />} />}
+        />
+      </Route>
+
+      {}
+      <Route
+        path="/login"
+        element={<RestrictedRoute component={<LoginPage />} redirectTo="/" />}
+      />
+      <Route
+        path="/register"
+        element={
+          <RestrictedRoute component={<RegisterPage />} redirectTo="/" />
+        }
+      />
+
+      {}
+      <Route
+        path="*"
+        element={<Navigate to={isLoggedIn ? "/" : "/login"} replace />}
+      />
     </Routes>
   );
 };

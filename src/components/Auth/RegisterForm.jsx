@@ -21,12 +21,15 @@ const RegisterForm = () => {
       <Formik
         initialValues={{ name: "", email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          dispatch(register(values))
-            .unwrap()
-            .then(() => navigate("/"))
-            .catch((error) => alert(error));
-          resetForm();
+        onSubmit={async (values, { resetForm }) => {
+          try {
+            await dispatch(register(values)).unwrap();
+            navigate("/");
+            resetForm();
+          } catch (error) {
+            alert(error);
+            console.error("Register error:", error);
+          }
         }}
       >
         <Form className={styles.form}>

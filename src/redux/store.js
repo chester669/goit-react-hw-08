@@ -17,18 +17,13 @@ import filtersReducer from "./filters/filtersSlice";
 const authPersistConfig = {
   key: "auth",
   storage,
-  whitelist: ["token"],
-};
-
-const contactsPersistConfig = {
-  key: "contacts",
-  storage,
+  whitelist: ["token", "isLoggedIn"],
 };
 
 export const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
-    contacts: persistReducer(contactsPersistConfig, contactsReducer),
+    contacts: contactsReducer,
     filters: filtersReducer,
   },
   middleware: (getDefaultMiddleware) =>
