@@ -12,7 +12,6 @@ const Layout = () => {
         <nav className={styles.nav}>
           <Link to="/">Home</Link>
           {isLoggedIn && <Link to="/contacts">Contacts</Link>}
-          {isLoggedIn && <p className={styles.welcome}>Welcome, {user.name}</p>}
           {isLoggedIn ? <UserMenu /> : <Link to="/login">Login</Link>}
         </nav>
       </header>
