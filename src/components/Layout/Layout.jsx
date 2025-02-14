@@ -1,21 +1,16 @@
-import { Outlet, Link } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import UserMenu from "../UserMenu/UserMenu";
+import { Outlet } from "react-router-dom";
+import AppBar from "../AppBar/AppBar";
 import styles from "./Layout.module.css";
 
 const Layout = () => {
-  const { isLoggedIn, user } = useAuth();
-
   return (
-    <div>
+    <div className={styles.container}>
       <header className={styles.header}>
-        <nav className={styles.nav}>
-          <Link to="/">Home</Link>
-          {isLoggedIn && <Link to="/contacts">Contacts</Link>}
-          {isLoggedIn ? <UserMenu /> : <Link to="/login">Login</Link>}
-        </nav>
+        <AppBar /> {}
       </header>
-      <Outlet />
+      <main className={styles.mainContent}>
+        <Outlet />
+      </main>
     </div>
   );
 };
