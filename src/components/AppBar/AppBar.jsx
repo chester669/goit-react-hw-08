@@ -7,16 +7,6 @@ import styles from "./AppBar.module.css";
 const AppBar = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  //   return (
-  //     <header className={styles.header}>
-  //       <nav className={styles.nav}>
-  //         <Navigation />
-  //       </nav>
-  //       {isLoggedIn ? <UserMenu /> : <AuthNav />}
-  //     </header>
-  //   );
-  // };
-
   return (
     <div className={styles.appBar}>
       <nav className={styles.nav}>
@@ -34,12 +24,3 @@ const AppBar = () => {
 };
 
 export default AppBar;
-
-// import Navigation from "../Navigation/Navigation";
-// import AuthNav from "../AuthNav/AuthNav";
-// import UserMenu from "../UserMenu/UserMenu";
-// import useAuth from "../../hooks/useAuth";
-// import styles from "./AppBar.module.css";
-
-// const AppBar = () => {
-//   const { isLoggedIn, user } = useAuth();
