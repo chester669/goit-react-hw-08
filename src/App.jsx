@@ -13,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 const App = () => {
   const dispatch = useDispatch();
   const isRefreshing = useSelector((state) => state.auth.isRefreshing);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
     dispatch(refreshUser());
@@ -22,24 +23,39 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      {}
+      <Route
+        path="/"
+        element={isLoggedIn ? <Layout /> : <Navigate to="/login" replace />}
+      >
         <Route index element={<HomePage />} />
         <Route
           path="/contacts"
-          element={<PrivateRoute component={ContactsPage} />}
+          element={
+            <PrivateRoute component={ContactsPage} redirectTo="/login" />
+          }
         />
       </Route>
 
+      {}
       <Route
         path="/login"
-        element={<RestrictedRoute component={LoginPage} redirectTo="/" />}
+        element={
+          <RestrictedRoute component={LoginPage} redirectTo="/contacts" />
+        }
       />
       <Route
         path="/register"
-        element={<RestrictedRoute component={RegisterPage} redirectTo="/" />}
+        element={
+          <RestrictedRoute component={RegisterPage} redirectTo="/contacts" />
+        }
       />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {}
+      <Route
+        path="*"
+        element={<Navigate to={isLoggedIn ? "/" : "/login"} replace />}
+      />
     </Routes>
   );
 };
